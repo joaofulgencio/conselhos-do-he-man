@@ -4,7 +4,7 @@ const path = require('path');
 const { startOfDay, isBefore, addDays } = require('date-fns');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Diretório das imagens
 const imageDirectory = path.join(__dirname, 'conselhos_do_he-man');
@@ -46,8 +46,13 @@ function chooseNewImage() {
     return currentImage;
 }
 
-// Rota para exibir a imagem
+// Rota para exibir a página principal (index.html)
 app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Rota para exibir a imagem aleatória
+app.get('/imagem', (req, res) => {
     const selectedImage = chooseNewImage();
     if (!selectedImage) {
         res.send('Todas as imagens já foram exibidas.');
@@ -60,5 +65,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+    console.log(`Servidor rodando na porta ${port}`);
 });
